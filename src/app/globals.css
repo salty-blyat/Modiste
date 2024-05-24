@@ -2,32 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
+/* Hide number input arrows */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer components {
+  .btn {
+    @apply bg-black px-5 py-3 text-white transition-all hover:scale-105 active:scale-100;
+  }
+
+  .btn-icon {
+    @apply fill-black p-1 text-xl transition-all hover:scale-105 active:scale-100;
+  }
+
+  .divider {
+    @apply my-5 h-px w-full bg-zinc-200;
+  }
+
+  .overflow-overlay {
+    overflow-y: scroll;
+    overflow-y: overlay;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+.carousel-status {
+  display: none;
 }

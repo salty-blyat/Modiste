@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "name": "Summer T-Shirt",
+    "category": "T-Shirts",
+    "price": 25,
+    "promotionPrice": 20,
+    "imageSrc": "/product1.jpg",
+    "blurDataUrl": "/product1_blur.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Casual Jeans",
+    "category": "Jeans",
+    "price": 40,
+    "imageSrc": "/product2.jpg",
+    "blurDataUrl": "/product2_blur.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Sporty Sneakers",
+    "category": "Shoes",
+    "price": 60,
+    "imageSrc": "/product3.jpg",
+    "blurDataUrl": "/product3_blur.jpg"
+  }
+]
