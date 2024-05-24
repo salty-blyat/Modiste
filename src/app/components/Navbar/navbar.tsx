@@ -35,7 +35,7 @@ const Navbar = () => {
     };
 
     const ProfileSetting = (
-        <div className='flex flex-col w-40 gap-y-3'>
+        <div className=' flex-col flex w-40 gap-y-3'>
             <Button className='text-left flex items-center gap-x-2' type='text' href='/profile'>
                 <UserOutlined /> Profile
             </Button>
