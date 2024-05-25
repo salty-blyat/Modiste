@@ -27,10 +27,12 @@ const Profile = () => {
                         />
                         {/* Profile Image */}
                         <div className=''>
-                            <ImgD
-                                src={user?.img_url}
-                                alt="User Profile"
-                                className=" rounded-full outline outline-2 outline-offset-2 outline-blue-500 relative lg:bottom-[5rem] sm:bottom-[4rem]" />
+                            {user?.img_url && (
+                                <Image
+                                    src={user.img_url}
+                                    alt="User Profile"
+                                    className=" rounded-full outline outline-2 outline-offset-2 outline-blue-500 relative lg:bottom-[5rem] sm:bottom-[4rem]" />
+                            )}
                             {/* FullName */}
                             <h1 className="w-full text-left my-4 sm:mx-4 xs:pl-4 text-gray-800 dark:text-white lg:text-4xl md:text-3xl sm:text-3xl xs:text-xl font-serif">
                                 {user?.user_name}
