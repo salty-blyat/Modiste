@@ -1,17 +1,20 @@
 "use client"
-import React from 'react'
+import React, { Suspense } from 'react'
 import Navbar from '../components/Navbar/navbar'
 import Footer from '../components/Footer/footer'
 import ClothingList from './clothingList'
 import Cart from '../components/Cart/cart'
+import Loading from '../Loading'
 
 const Clothings = () => {
     return (
         <>
-            <Navbar />
-            <ClothingList />
-            <Cart />
-            <Footer />
+            <Suspense fallback={<Loading />}>
+                <Navbar />
+                <ClothingList />
+                <Cart />
+                <Footer />
+            </Suspense>
         </>
     )
 }

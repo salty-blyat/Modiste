@@ -1,6 +1,6 @@
 "use client"
 
-import Collection from './collection'; // Assuming correct import path
+import Collection from './collection';
 import men from '../../../../public/collections/men.webp'
 import women from '../../../../public/collections/women.webp'
 import unisex from '../../../../public/collections/unisex.webp'
@@ -14,13 +14,13 @@ const CollectionList = () => {
                     <Collection
                         title="Men"
                         subtitle="See our men collection for summer"
-                        image={{ src: men }} // Example path to image
+                        image={men}
                         href='/clothings'
                     />
                     <Collection
                         title="Women"
                         subtitle="Fresh summer collection available now"
-                        image={{ src: women }}
+                        image={women}
                         right
                         href='/clothings'
                     />
@@ -29,13 +29,13 @@ const CollectionList = () => {
                     <Collection
                         title="Kid"
                         subtitle="See what we offer to kids"
-                        image={{ src: kid }}
+                        image={kid}
                         href='/clothings'
                     />
                     <Collection
                         title="Unisex"
                         subtitle="See what we have in our offer"
-                        image={{ src: unisex }}
+                        image={unisex}
                         right
                         href='/clothings'
                     />

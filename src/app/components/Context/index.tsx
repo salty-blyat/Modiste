@@ -1,23 +1,25 @@
 "use client";
-import { ProductProps } from '@/app/Types/product';
+import { ProductProps } from '@/app/Types/interfaces';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { ChangeEvent, ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { useAuthContext } from './auth';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import Cookies from 'js-cookie';
 
 // Define the context type
+// Ensure the 'handleCheckboxChange' function in the AppContextType interface
 interface AppContextType {
     openCartModal: boolean;
     productDetailModal: boolean;
     selectedOptions: string[];
     minPrice: number;
     maxPrice: number;
+    handleCloseCartModal: () => void;
     sortOrder: string;
     isPromotion: boolean;
     cartItems: ProductProps[];
     handleToggleCartModal: () => void;
-    handleCheckboxChange: (checkedValues: string[]) => void;
+    handleCheckboxChange: (checkedValues: string | string[]) => void;
     handleMinPriceChange: (e: ChangeEvent<HTMLInputElement>) => void;
     handleMaxPriceChange: (e: ChangeEvent<HTMLInputElement>) => void;
     handleMenuClick: (e: { key: string }) => void;
@@ -27,13 +29,12 @@ interface AppContextType {
     handleDecreaseCartItem: (item: ProductProps) => void;
     handleClearCartItem: () => void;
     handleCheckout: () => void;
-    handleCloseCartModal: () => void;
 }
 
-// Create the AppContext
+// Define the context
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-// Create the AppProvider component
+// Implement the AppProvider component
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { user } = useAuthContext();
     const router = useRouter();
@@ -52,78 +53,74 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     useEffect(() => {
         const savedCartItems = Cookies.get('cartItems');
         if (savedCartItems) {
-            console.log('Loaded cart items from cookies:', savedCartItems);
             setCartItems(JSON.parse(savedCartItems));
         }
     }, []);
 
     // Update cookies and URL whenever cartItems changes or when cartItems are loaded from cookies
-    // Update URL parameters only when there are items in the cart
     useEffect(() => {
-        // Only update URL parameters if there are items in the cart
         if (cartItems.length > 0) {
             const params = new URLSearchParams(searchParams);
             params.delete('cart');
-
             cartItems.forEach(item => {
                 params.append('cart', `${item.id}:${item.inCart}`);
             });
-
-            router.replace(`${pathname}?${params.toString()}`, { shallow: true });
+            router.replace(`${pathname}?${params.toString()}`);
         } else {
-            // If there are no items in the cart, remove the 'cart' parameter from the URL
             const params = new URLSearchParams(searchParams);
             params.delete('cart');
-
-            router.replace(`${pathname}?${params.toString()}`, { shallow: true });
+            router.replace(`${pathname}?${params.toString()}`);
         }
-    }, [cartItems, pathname, router, searchParams]);
+    }, [ pathname, router, searchParams]);
 
+    // Update the cart items in cookies
+    const updateCartItemsInCookies = (items: ProductProps[]) => {
+        Cookies.set('cartItems', JSON.stringify(items), { expires: 7 }); // Set cookies to expire in 7 days
+    };
 
     const handleAddToCart = (item: ProductProps) => {
         const existingItemIndex = cartItems.findIndex(cartItem => cartItem.id === item.id);
-    
         if (existingItemIndex !== -1) {
-            // If the item already exists in the cart, check if adding one more exceeds the stock
             const updatedCartItems = [...cartItems];
-            const newItemCount = updatedCartItems[existingItemIndex].inCart + 1;
-            if (newItemCount <= item.inStock) {
+            const newItemCount = (updatedCartItems[existingItemIndex].inCart || 0) + 1;
+            if (newItemCount <= (item.inStock || 0)) {
                 updatedCartItems[existingItemIndex].inCart = newItemCount;
                 setCartItems(updatedCartItems);
+                updateCartItemsInCookies(updatedCartItems); // Update cookies
             } else {
-                // If adding one more exceeds the stock, show an alert to the user
                 alert("Cannot add more items. Maximum stock reached.");
             }
         } else {
-            // If the item is not in the cart yet, check if adding one exceeds the stock
-            if (1 <= item.inStock) {
-                setCartItems(cartItems => [...cartItems, { ...item, inCart: 1 }]);
+            if (1 <= (item.inStock || 0)) {
+                const updatedCartItems = [...cartItems, { ...item, inCart: 1 }];
+                setCartItems(updatedCartItems);
+                updateCartItemsInCookies(updatedCartItems); // Update cookies
             } else {
-                // If adding one exceeds the stock, show an alert to the user
                 alert("Cannot add more items. Maximum stock reached.");
             }
         }
     };
-    
 
     const handleClearCartItem = () => {
         setCartItems([]);
+        Cookies.remove('cartItems');
     };
 
     const handleDecreaseCartItem = (item: ProductProps) => {
         const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
-
         if (existingItem) {
-            if (existingItem.inCart > 1) {
+            if ((existingItem.inCart || 0) > 1) {
                 const updatedCartItems = cartItems.map(cartItem =>
                     cartItem.id === item.id
-                        ? { ...cartItem, inCart: cartItem.inCart - 1 }
+                        ? { ...cartItem, inCart: (cartItem.inCart || 0) - 1 }
                         : cartItem
                 );
                 setCartItems(updatedCartItems);
+                updateCartItemsInCookies(updatedCartItems); // Update cookies
             } else {
                 const updatedCartItems = cartItems.filter(cartItem => cartItem.id !== item.id);
                 setCartItems(updatedCartItems);
+                updateCartItemsInCookies(updatedCartItems); // Update cookies
             }
         }
     };
@@ -140,20 +137,21 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                     products: cartItems
                 };
 
-                const response = await axios.post('http://localhost:3000/api/checkout', requestBody);
+                const url = `${process.env.NEXT_PUBLIC_CHECKOUT}${requestBody}`;
+                const response = await axios.post(url);
 
-                console.log('Checkout successful:', response.data);
                 handleClearCartItem();
                 alert('success');
-
             } catch (error) {
                 console.error('Error during checkout:', error);
             }
         }
     };
 
-    const handleCheckboxChange = (checkedValues: string[]) => {
-        setSelectedOptions(checkedValues);
+    // Updated handleCheckboxChange function
+    const handleCheckboxChange = (checkedValues: string | string[]) => {
+        const values = Array.isArray(checkedValues) ? checkedValues : [checkedValues];
+        setSelectedOptions(values);
     };
 
     const handleMinPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -175,6 +173,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const handleToggleCartModal = () => {
         setOpenCartModal(prev => !prev);
     };
+
     const handleCloseCartModal = () => {
         setOpenCartModal(false);
     };

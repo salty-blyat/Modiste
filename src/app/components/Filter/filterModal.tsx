@@ -1,11 +1,12 @@
 "use client";
 import { DownOutlined } from '@ant-design/icons';
-import { Checkbox, Dropdown, Menu } from 'antd';
-import React from 'react';
+import { Checkbox, Dropdown } from 'antd';
 import { motion, useCycle } from 'framer-motion';
+import { useState } from 'react';
 import { useAppContext } from '../Context';
 
 const FilterModal = () => {
+    const [isOpen, setIsOpen] = useState(false);
     const {
         selectedOptions,
         minPrice,
@@ -33,15 +34,15 @@ const FilterModal = () => {
         { key: 'A...Z', label: 'A...Z' },
         { key: 'Z...A', label: 'Z...A' },
     ];
-
-    const menu = (
-        <Menu items={items} onClick={handleMenuClick} />
-    );
+    const handleOpenChange = (open: boolean) => {
+        setIsOpen(open);
+        console.log('Dropdown open state:', open);
+    };
     const [rotate, cycleRotate] = useCycle(90, 0);
 
     return (
         <>
-            <Dropdown overlay={menu} trigger={['click']} className="hover:cursor-pointer mb-3" onOpenChange={cycleRotate}>
+            <Dropdown menu={{ items }} trigger={['click']} className="hover:cursor-pointer mb-3" onOpenChange={handleOpenChange}>
                 <div className='text-2xl font-semibold' onClick={(e) => e.preventDefault()}>
                     <p className='mb-3'>Sort by</p>
                     <p className='text-xl flex justify-between items-center font-medium border rounded-lg px-5'>
@@ -65,7 +66,7 @@ const FilterModal = () => {
             <div className='text-2xl font-semibold my-3'>
                 Price
             </div>
-            <Checkbox checked={isPromotion} onChange={handlePromotionChange}>
+            <Checkbox checked={isPromotion} onChange={() => handlePromotionChange}>
                 <span className='text-base'>Promotion</span>
             </Checkbox>
 

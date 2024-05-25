@@ -11,14 +11,13 @@ import { useAppContext } from '../Context';
 import { PopoverContent } from '../Popover/popover';
 import NavItem from './navItem';
 import { useAuthContext } from '../Context/auth';
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState } from 'react'; 
 
 
 const Navbar = () => {
     const { user, logout } = useAuthContext();
     const { handleToggleCartModal, handleCheckboxChange, cartItems } = useAppContext();
-    const totalInCart = cartItems.reduce((acc, item) => acc + item.inCart, 0);
+    const totalInCart = cartItems.reduce((acc, item) => acc + (item.inCart || 0), 0);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const showModal = () => {
@@ -36,17 +35,21 @@ const Navbar = () => {
 
     const ProfileSetting = (
         <div className=' flex-col flex w-40 gap-y-3'>
-            <Button className='text-left flex items-center gap-x-2' type='text' href='/profile'>
-                <UserOutlined /> Profile
+            <Button className='text-left flex items-center gap-x-2' type='text'>
+                <Link href={'/profile'} passHref>
+                    <UserOutlined /> Profile
+                </Link>
             </Button>
-            <Button className='text-left flex items-center gap-x-2' type='text' href='/setting'>
-                <SettingOutlined /> Setting
+            <Button className='text-left flex items-center gap-x-2' type='text'>
+                <Link href={'/setting'} passHref>
+                    <SettingOutlined /> Setting
+                </Link>
             </Button>
             <hr />
             <Button className='text-left flex items-center gap-x-2' type='text' onClick={showModal}>
                 <LogoutOutlined /> Log out
             </Button>
-        </div>
+        </div >
     );
 
 
@@ -62,7 +65,7 @@ const Navbar = () => {
                     </Link>
                     <Modal
                         title="Confirm"
-                        visible={isModalOpen}
+                        open={isModalOpen}
                         onOk={handleOk}
                         onCancel={handleCancel}
                         okText="Confirm"
@@ -96,20 +99,18 @@ const Navbar = () => {
                             handleClick={() => handleCheckboxChange('Unisex')}
                         />
                     </ul>
-                    {/* contact us */}
 
-
-
-                    <Link href="/contactus" passHref>
-                        <PhoneOutlined className='hover:rounded-full hover:text-white p-2 hover:bg-gray-600 transition-all ease-in' style={{ fontSize: "1.4rem" }} />
-                    </Link>
                     {/* Header Icons */}
                     <div className="hidden hover:cursor-pointer gap-x-3 xl:flex space-x-5 items-center relative">
+                        <Link href="/contactus" passHref>
+                            <PhoneOutlined className='text-xl p-2 transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full' />
+                        </Link>
                         {/* SVG Icon */}
                         <Popover content={PopoverContent} title="Cart" placement='bottomLeft'>
-                            <ShoppingCartOutlined className='hover:rounded-full hover:text-white p-2 hover:bg-gray-600 transition-all ease-in'
+                            <ShoppingCartOutlined
+                                className='text-2xl p-2 transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full'
                                 onClick={handleToggleCartModal}
-                                style={{ fontSize: "1.7rem" }} />
+                            />
                             {totalInCart > 0 &&
                                 <div className='hover:cursor-pointer hidden xl:block absolute bottom-1 right-14'>
                                     <span className="bg-red-900 py-1 px-2 text-xs text-white rounded-full">{totalInCart}</span>
@@ -130,21 +131,24 @@ const Navbar = () => {
                                     </Link>
                                 ) : (
                                     <Link href="/login" passHref>
-                                        <UserOutlined className='hover:rounded-full hover:text-white p-2 hover:bg-gray-600 transition-all ease-in' style={{ fontSize: "1.4rem" }} />
+                                        <UserOutlined className='text-xl p-2 transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full' />
                                     </Link>
                                 )}
                             </Popover>
                         )}
                     </div>
                 </div>
-                {/* Responsive navbar for small  screen toggle */}
-
-                <div className="xl:hidden flex gap-x-3 mr-6 items-center relative">
+                {/* Responsive navbar for small screen toggle */}
+                <div className="xl:hidden flex gap-x-1 mr-6 items-center relative pr-6">
                     {/* Responsive Icon */}
+                    <Link href="/contactus" passHref>
+                        <PhoneOutlined className='text-xl p-2 transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full' />
+                    </Link>
                     <Popover content={PopoverContent} title="Cart" placement='bottomLeft'>
                         <ShoppingCartOutlined
+                            className='text-2xl p-2 transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full'
                             onClick={handleToggleCartModal}
-                            style={{ fontSize: "1.7rem" }} className='hover:rounded-full hover:text-white p-2 hover:bg-gray-600 transition-all ease-in' />
+                        />
                         {totalInCart > 0 &&
                             <div className='xl:hidden hover:cursor-pointer absolute bottom-6 right-12 '>
                                 <span className="bg-red-900 py-1 px-2 text-xs text-white rounded-full">{totalInCart}</span>
@@ -152,10 +156,10 @@ const Navbar = () => {
                         }
                     </Popover>
                     {user?.img_url ? (
-                        <Popover placement="bottomLeft" content={ProfileSetting}>
-                            <Link href="/profile" passHref>
-                                <Image src={user?.img_url} alt={user.user_name} className='rounded-full' width={55} height={55} />
-                            </Link>
+                        <Popover placement="bottomLeft" content={ProfileSetting} trigger='click'>
+                            {/* <Link href="/profile" passHref> */}
+                            <Image src={user?.img_url} alt={user.user_name} className='rounded-full' width={35} height={35} />
+                            {/* </Link> */}
                         </Popover>
                     ) : (
                         <Popover placement="bottomLeft" content={user ? ProfileSetting : <Button href='/login'>Sign in</Button>}>
@@ -165,7 +169,7 @@ const Navbar = () => {
                                 </Link>
                             ) : (
                                 <Link href="/login" passHref>
-                                    <UserOutlined className='hover:rounded-full hover:text-white p-2 hover:bg-gray-600 transition-all ease-in' style={{ fontSize: "1.4rem" }} />
+                                    <UserOutlined className='text-xl p-2 transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full' />
                                 </Link>
                             )}
                         </Popover>

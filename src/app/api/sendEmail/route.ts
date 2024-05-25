@@ -6,14 +6,9 @@ const mailjet = new Mailjet({
   apiSecret: process.env.EMAIL_SECRET,
 });
 
-export async function POST(req: NextRequest) {
-  // Log a message to indicate that the endpoint is hit
-  console.log("Request received at /api/sendEmail"); 
-    // Parse the request body
-    const { name, message, date, time } = await req.json();
-    const email = "hokheng12123@gmail.com";
-    console.log("Received email:", name, "time:", time);
-  console.log(name, message, date, time );
+export async function POST(req: NextRequest) { 
+    const { name, message  } = await req.json();
+    const email = "hokheng12123@gmail.com"; 
 
   try {
     const result = await mailjet.post("send", { 'version': 'v3.1' })
@@ -28,13 +23,11 @@ export async function POST(req: NextRequest) {
             "Name": "Modiste"
           }],
           "Subject": "Customer Report",
-          "TextPart": `Client Name: ${name}\nDate: ${date}\nTime: ${time}\n\nMessage:\n${message}`,
+          "TextPart": `Client Name: ${name}\n   Message:\n${message}`,
           "HTMLPart": `
           <div style="font-family: Helvetica, Arial, sans-serif; background-color: #f7f7f7; padding: 20px; border-radius: 5px; color: #333;">
           <h2 style="color: #333;">New Appointment Request</h2>
-          <p><strong>Client Name:</strong> ${name}</p>
-          <p><strong>Date:</strong> ${date}</p>
-          <p><strong>Time:</strong> ${time}</p> 
+          <p><strong>Client Name:</strong> ${name}</p> 
           <p><strong>Message:</strong></p>
           <p>${message}</p>
           </div>
@@ -46,11 +39,21 @@ export async function POST(req: NextRequest) {
 
     // Returning a successful response
     return NextResponse.json({ message: 'Email sent successfully', result: result.body });
-  } catch (err) {
-      // Logging the error
-      console.error("Error sending email:", err);
-  
-      // Returning a failure response with error details
-      return NextResponse.json({ error: 'Failed to send email', details: err.message || err }, { status: 500 });
-  }
+  } catch (err: unknown) {
+    // Logging the error
+    console.error("Error sending email:", err);
+
+    // Narrowing the error type
+    let errorMessage: string;
+    if (err instanceof Error) {
+        errorMessage = err.message;
+    } else if (typeof err === 'string') {
+        errorMessage = err;
+    } else {
+        errorMessage = 'An unknown error occurred';
+    }
+
+    // Returning a failure response with error details
+    return NextResponse.json({ error: 'Failed to send email', details: errorMessage }, { status: 500 });
+} 
 }

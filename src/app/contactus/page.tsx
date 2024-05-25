@@ -1,40 +1,30 @@
-'use client'
-import {
-    UserOutlined
-} from "@ant-design/icons";
-import { Button, DatePicker, Form, Input, TimePicker } from "antd";
-import moment from 'moment';
-import { useState } from "react";
-import Cart from "../components/Cart/cart";
-import Navbar from "../components/Navbar/navbar";
+'use client';
+import { UserOutlined } from "@ant-design/icons";
+import { Button, Card, Form, Input } from "antd";
+import { Suspense, useState } from "react";
+import dynamic from 'next/dynamic';
+import Loading from "../Loading";
 
+const Cart = dynamic(() => import("../components/Cart/cart"), { loading: () => <div>Loading...</div> });
+const Navbar = dynamic(() => import("../components/Navbar/navbar"), { loading: () => <div>Loading...</div> });
+
+interface FormData {
+    name: string;
+    message: string;
+}
 
 const ContactUs = () => {
     const [form] = Form.useForm<FormData>();
     const [formData, setFormData] = useState<FormData>({
         name: "",
         message: "",
-        date: null,
-        time: ""
     });
-
+    const [loading, setLoading] = useState<boolean>(false); // State for form submission loading
 
     const handleSubmit = async (values: FormData) => {
         try {
-            // Ensure values.date and values.time are valid moment objects before formatting
-            const formattedDate = values.date ? moment(values.date).format('DD/MM/YYYY') : '';
-
-            let hourOnly = '';
-            let minuteOnly = '';
-            if (values.time) { // Check if values.time is not null
-                // Create a Date object from the string
-                const dateTime = new Date(values.time);
-                const timeString = dateTime.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
-                const [hours, minutes] = timeString.split(":"); // Split time into hours and minutes
-                hourOnly = hours;
-                minuteOnly = minutes;
-            }
-
+            setLoading(true); // Set loading state to true during form submission
+    
             const response = await fetch('/api/sendEmail', {
                 method: 'POST',
                 headers: {
@@ -42,43 +32,42 @@ const ContactUs = () => {
                 },
                 body: JSON.stringify({
                     name: values.name,
-                    message: values.message,
-                    date: formattedDate,
-                    time: `${hourOnly}:${minuteOnly}`, // Sending the time in HH:mm format
+                    message: values.message
                 }),
             });
-
+    
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);
             }
-
+    
             const data = await response.json();
-            console.log(data)
-            // Additional logic for success response
+            console.log('Success:', data); 
+    
+            // Provide feedback to the user that their message was sent successfully 
+            // This could be a success message or any other appropriate feedback
+    
         } catch (error) {
             console.error('Error:', error);
-            // Additional logic for error handling
+            // Provide feedback to the user that there was an error sending the message
+            // You can display an error message or retry option
+        } finally {
+            setLoading(false); // Reset loading state after form submission
         }
     };
-
-
-
 
     const handleFormChange = (changedValues: any, allValues: FormData) => {
         setFormData(allValues);
     };
 
-
     return (
-        <>
+        <Suspense fallback={<Loading />}>
             <Navbar />
             <Cart />
-            <div
-                id="contact-us"
-                className="mt-[20rem]" >
-                <div className="custom-screen  md:grid md:grid-cols-2 gap-12">
+            <div className="flex justify-center items-center min-h-screen bg-gray-100">
+                <Card title="Contact Us" className="w-full max-w-2xl p-8 rounded-lg shadow-lg">
                     <Form
                         layout="vertical"
+                        form={form}
                         onFinish={handleSubmit}
                         onValuesChange={handleFormChange}
                         initialValues={formData}
@@ -92,8 +81,7 @@ const ContactUs = () => {
                             <Input
                                 prefix={<UserOutlined className="text-gray-500" />}
                                 placeholder="Full Name"
-                                className="bg-gray-200 text-gray-600 placeholder-gray-400 rounded-md py-3 px-4 focus:outline-none"
-                                style={{ borderColor: 'transparent', boxShadow: 'none' }}
+                                className="input-style"
                             />
                         </Form.Item>
 
@@ -105,57 +93,30 @@ const ContactUs = () => {
                             <Input.TextArea
                                 placeholder="Message"
                                 rows={4}
-                                className="bg-gray-200 text-gray-600 placeholder-gray-400 rounded-md py-3 px-4 focus:outline-none"
-                                style={{ borderColor: 'transparent', boxShadow: 'none' }}
+                                className="input-style"
                             />
                         </Form.Item>
-
-                        <Form.Item name="date" className="input">
-                            <DatePicker
-                                className="w-full bg-gray-200 text-gray-600 rounded-md py-3 px-4 focus:outline-none"
-                                inputReadOnly
-                                style={{ borderColor: 'transparent', boxShadow: 'none' }}
-                            />
-                        </Form.Item>
-
-                        <Form.Item name="time" className="input">
-                            <TimePicker
-                                className="w-full bg-gray-200 text-gray-600 rounded-md py-3 px-4 focus:outline-none"
-                                inputReadOnly
-                                format="HH:mm"
-                                minuteStep={30}
-                                onChange={(timeString) => {
-                                    // Update the form state with the first element of the timeString array
-                                    setFormData({ ...formData, time: Array.isArray(timeString) ? timeString[0] : timeString });
-                                }}
-                                style={{ borderColor: 'transparent', boxShadow: 'none' }}
-                            />
-                        </Form.Item>
-
                         <Form.Item shouldUpdate className="input">
                             {() => (
                                 <Button
                                     type="primary"
                                     htmlType="submit"
                                     className="w-full bg-gray-600 text-white font-semibold rounded-md focus:outline-none"
+                                    loading={loading} // Show loading indicator while form is submitting
                                     disabled={
                                         !form.isFieldsTouched(true) ||
                                         !!form.getFieldsError().filter(({ errors }) => errors.length).length
                                     }
-                                    style={{ boxShadow: 'none' }}
                                 >
                                     Send Message
                                 </Button>
                             )}
                         </Form.Item>
                     </Form>
-                </div>
+                </Card>
             </div>
-
-        </>
-
+        </Suspense>
     );
-
 };
 
 export default ContactUs;

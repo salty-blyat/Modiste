@@ -11,6 +11,7 @@ export interface ProductProps {
     created_at: string;
     num_purchases: number;
     inCart?: number;
+    inStock?: number;
 }
 
 export interface UserProps {

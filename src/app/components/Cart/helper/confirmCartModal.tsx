@@ -7,7 +7,6 @@ import { useAuthContext } from '../../Context/auth';
 interface ConfirmCartModalProps {
     isModalOpen: boolean;
     closeModal: () => void;
-    confirmPayment: (paymentMethod: string) => void;
 }
 
 const ConfirmCartModal: React.FC<ConfirmCartModalProps> = ({ isModalOpen, closeModal }) => {
@@ -16,17 +15,16 @@ const ConfirmCartModal: React.FC<ConfirmCartModalProps> = ({ isModalOpen, closeM
     const [selectPaymentMethod, setSelectPaymentMethod] = useState<string>('cash');
     const [form] = useForm();
 
-    const handleFinish = (values: any) => {
-        console.log('Received values:', values);
+    const handleFinish = () => {
         handleCheckout();
-        closeModal(); // Update transaction success state
-        form.resetFields(); // Clear the form fields
+        closeModal();
+        form.resetFields();
     };
 
     return (
         <Modal
             title="Confirm Payment"
-            visible={isModalOpen}
+            open={isModalOpen}
             onCancel={closeModal}
             footer={[
                 <Button key="cancel" onClick={closeModal}>

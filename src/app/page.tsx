@@ -1,10 +1,11 @@
-"use client"
-import Home from "./Home";
+'use client' 
+import Home from './Home';
 
-export default function App() {
-  return (
-    <>
-        <Home />
-    </>
+
+const App = () => {
+  return ( 
+      <Home /> 
   );
-}
+};
+
+export default App;

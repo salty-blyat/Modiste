@@ -1,11 +1,12 @@
 "use client"
-import { ProductProps } from '@/app/Types/product';
+import { ProductProps } from '@/app/Types/interfaces';
 import { CloseSquareOutlined, MinusOutlined, PlusOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
-import { useAppContext } from '../Context';
+import { useAppContext } from '../Context'; 
 import ConfirmCartModal from './helper/confirmCartModal';
+
 
 
 const Cart = () => {
@@ -75,7 +76,7 @@ const Cart = () => {
                         <div className="flex w-full items-center justify-between">
                             <div className="flex items-center gap-2">
                                 <h1 className="text-xl font-semibold">
-                                    Cart ({cartItems.reduce((total, item) => total + item.inCart, 0)})
+                                    Cart ({cartItems.reduce((total, item) => total + (item.inCart || 0), 0)})
                                 </h1>
                                 <button className="text-sm hover:underline" onClick={handleClearCartItem}>
                                     (Clear cart)

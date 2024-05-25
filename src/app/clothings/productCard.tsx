@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ProductProps } from '../Types/product';
+import { ProductProps } from '../Types/interfaces';
 
 const ProductCard = ({ item }: { item: ProductProps }) => {
     const { id, name, discount, price, image_url, category_name } = item;

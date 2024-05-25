@@ -1,4 +1,7 @@
 "use client"
+
+import Link from "next/link";
+
 const Footer = () => {
   return (
     <footer className="mt-10 w-full px-3 py-4 sm:px-10 xl:px-24 2xl:px-48">
@@ -9,22 +12,18 @@ const Footer = () => {
 
       <h6 className="mt-10">
         Shop by{' '}
-        <a
-          target="_blank"
-          rel="noreferrer"
+        <Link href={'/'}
           className="font-bold hover:underline"
         >
           salty-blyat
-        </a>
+        </Link>
         , all product images from{' '}
-        <a
-          href="https://nike.com"
-          target="_blank"
-          rel="noreferrer"
+        <Link
+          href={'/'}
           className="font-bold hover:underline"
         >
           nike.com
-        </a>
+        </Link>
       </h6>
     </footer>
   );
