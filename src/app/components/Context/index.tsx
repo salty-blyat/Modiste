@@ -57,22 +57,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         }
     }, []);
 
-    // Update cookies and URL whenever cartItems changes or when cartItems are loaded from cookies
-    useEffect(() => {
-        if (cartItems.length > 0) {
-            const params = new URLSearchParams(searchParams);
-            params.delete('cart');
-            cartItems.forEach(item => {
-                params.append('cart', `${item.id}:${item.inCart}`);
-            });
-            router.replace(`${pathname}?${params.toString()}`);
-        } else {
-            const params = new URLSearchParams(searchParams);
-            params.delete('cart');
-            router.replace(`${pathname}?${params.toString()}`);
-        }
-    }, [ pathname, router, searchParams]);
-
+ 
     // Update the cart items in cookies
     const updateCartItemsInCookies = (items: ProductProps[]) => {
         Cookies.set('cartItems', JSON.stringify(items), { expires: 7 }); // Set cookies to expire in 7 days
