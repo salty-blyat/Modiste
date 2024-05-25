@@ -12,6 +12,7 @@ import Link from 'next/link';
 
 const Profile = () => {
     const { user } = useAuthContext();
+
     return (
         <>
             <Suspense fallback={<Loading />}>
@@ -28,11 +29,20 @@ const Profile = () => {
                         />
                         {/* Profile Image */}
                         <div>
-                            <Image
-                                src={user.img_url || '../../../../public/defaultImage.jpg'}
-                                alt="User Profile"
-                                className=" rounded-full outline outline-2 outline-offset-2 outline-blue-500 relative lg:bottom-[5rem] sm:bottom-[4rem]" />
 
+                            {user ? (
+                                <ImgD
+                                    src={user.img_url || '/defaultImage.jpg'} // Ensure this path is correct for your project
+                                    alt="User Profile"
+                                    className="rounded-full outline outline-2 outline-offset-2 outline-blue-500 relative lg:bottom-[5rem] sm:bottom-[4rem]"
+                                />
+                            ) : (
+                                <Image
+                                    src="/defaultImage.jpg" // Ensure this path is correct for your project
+                                    alt="Default Profile"
+                                    className="rounded-full outline outline-2 outline-offset-2 outline-blue-500 relative lg:bottom-[5rem] sm:bottom-[4rem]"
+                                />
+                            )}
                             {/* FullName */}
                             <h1 className="w-full text-left my-4 sm:mx-4 xs:pl-4 text-gray-800 dark:text-white lg:text-4xl md:text-3xl sm:text-3xl xs:text-xl font-serif">
                                 {user?.user_name}
