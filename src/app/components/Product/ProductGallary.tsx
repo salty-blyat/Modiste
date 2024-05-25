@@ -9,7 +9,7 @@ const ProductGallery = ({ images }: { images: string[] }) => {
       {images.map((img, index) => (
         <div key={index} className="w-24 h-[40rem] object-cover">
           <Image
-            src={img}
+            src={img || '../../../../public/defaultImage.jpg'}
             className="object-cover"
             layout="fill"
             alt="Product"

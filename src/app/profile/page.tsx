@@ -7,6 +7,7 @@ import Image from 'next/image';
 import banner from '../../../public/banner.jpg'
 import { Suspense } from 'react';
 import Loading from '../Loading';
+import Link from 'next/link';
 
 
 const Profile = () => {
@@ -21,18 +22,17 @@ const Profile = () => {
                     <div className="flex flex-col">
                         {/* Cover Image */}
                         <Image
-                            src={banner}
+                            src={banner || '../../../../public/defaultImage.jpg'}
                             alt="User Cover"
                             className="w-full "
                         />
                         {/* Profile Image */}
-                        <div className=''>
-                            {user?.img_url && (
-                                <Image
-                                    src={user.img_url}
-                                    alt="User Profile"
-                                    className=" rounded-full outline outline-2 outline-offset-2 outline-blue-500 relative lg:bottom-[5rem] sm:bottom-[4rem]" />
-                            )}
+                        <div>
+                            <Image
+                                src={user.img_url || '../../../../public/defaultImage.jpg'}
+                                alt="User Profile"
+                                className=" rounded-full outline outline-2 outline-offset-2 outline-blue-500 relative lg:bottom-[5rem] sm:bottom-[4rem]" />
+
                             {/* FullName */}
                             <h1 className="w-full text-left my-4 sm:mx-4 xs:pl-4 text-gray-800 dark:text-white lg:text-4xl md:text-3xl sm:text-3xl xs:text-xl font-serif">
                                 {user?.user_name}
@@ -121,7 +121,7 @@ const Profile = () => {
                             </div>
                             {/* Social Links */}
                             <div className="fixed right-2 bottom-20 flex flex-col rounded-sm bg-gray-200 text-gray-500 dark:bg-gray-200/80 dark:text-gray-700 hover:text-gray-600 hover:dark:text-gray-400">
-                                <a href="https://www.linkedin.com/in/samuel-abera-6593a2209/">
+                                <Link href={'/'}>
                                     <div className="p-2 hover:text-primary hover:dark:text-primary">
                                         <svg
                                             className="lg:w-6 lg:h-6 xs:w-4 xs:h-4 text-blue-500"
@@ -140,8 +140,8 @@ const Profile = () => {
                                             <path d="M7.2 8.809H4V19.5h3.2V8.809Z" />
                                         </svg>
                                     </div>
-                                </a>
-                                <a href="https://twitter.com/Samuel7Abera7">
+                                </Link>
+                                <Link href={'/'}>
                                     <div className="p-2 hover:text-primary hover:dark:text-primary">
                                         <svg
                                             className="lg:w-6 lg:h-6 xs:w-4 xs:h-4 text-gray-900"
@@ -155,8 +155,8 @@ const Profile = () => {
                                             <path d="M13.795 10.533 20.68 2h-3.073l-5.255 6.517L7.69 2H1l7.806 10.91L1.47 22h3.074l5.705-7.07L15.31 22H22l-8.205-11.467Zm-2.38 2.95L9.97 11.464 4.36 3.627h2.31l4.528 6.317 1.443 2.02 6.018 8.409h-2.31l-4.934-6.89Z" />
                                         </svg>
                                     </div>
-                                </a>
-                                <a href="">
+                                </Link>
+                                <Link href={'/'} passHref>
                                     <div className="p-2 hover:text-blue-500 hover:dark:text-blue-500">
                                         <svg
                                             className="lg:w-6 lg:h-6 xs:w-4 xs:h-4 text-blue-700"
@@ -174,8 +174,8 @@ const Profile = () => {
                                             />
                                         </svg>
                                     </div>
-                                </a>
-                                <a href="https://www.youtube.com/@silentcoder7">
+                                </Link>
+                                <Link href={'/'}>
                                     <div className="p-2 hover:text-primary hover:dark:text-primary">
                                         <svg
                                             className="lg:w-6 lg:h-6 xs:w-4 xs:h-4 text-red-600"
@@ -193,7 +193,7 @@ const Profile = () => {
                                             />
                                         </svg>
                                     </div>
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -212,7 +212,7 @@ const Profile = () => {
                     {/* Profile Image */}
                     <div className=''>
                         <Image
-                            src={user?.img_url}
+                            src={user?.img_url || '../../../../public/defaultImage.jpg'}
                             alt="User Profile"
                             className=" rounded-full outline outline-2 outline-offset-2 outline-blue-500 relative lg:bottom-[5rem] sm:bottom-[4rem]" />
                         {/* FullName */}
@@ -304,7 +304,6 @@ const Profile = () => {
                                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d252230.02028974562!2d38.613328040215286!3d8.963479542403238!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85cef5ab402d%3A0x8467b6b037a24d49!2sAddis%20Ababa!5e0!3m2!1sen!2set!4v1710567234587!5m2!1sen!2set"
                                     className="rounded-lg w-full h-full"
                                     style={{ border: 0 }}
-                                    allowFullScreen=""
                                     loading="lazy"
                                     referrerPolicy="no-referrer-when-downgrade"
                                 />
@@ -312,7 +311,7 @@ const Profile = () => {
                         </div>
                         {/* Social Links */}
                         <div className="fixed right-2 bottom-20 flex flex-col rounded-sm bg-gray-200 text-gray-500 dark:bg-gray-200/80 dark:text-gray-700 hover:text-gray-600 hover:dark:text-gray-400">
-                            <a href="https://www.linkedin.com/in/samuel-abera-6593a2209/">
+                            <Link href={'/'} passHref>
                                 <div className="p-2 hover:text-primary hover:dark:text-primary">
                                     <svg
                                         className="lg:w-6 lg:h-6 xs:w-4 xs:h-4 text-blue-500"
@@ -331,8 +330,8 @@ const Profile = () => {
                                         <path d="M7.2 8.809H4V19.5h3.2V8.809Z" />
                                     </svg>
                                 </div>
-                            </a>
-                            <a href="https://twitter.com/Samuel7Abera7">
+                            </Link>
+                            <Link href={'/'}>
                                 <div className="p-2 hover:text-primary hover:dark:text-primary">
                                     <svg
                                         className="lg:w-6 lg:h-6 xs:w-4 xs:h-4 text-gray-900"
@@ -346,8 +345,8 @@ const Profile = () => {
                                         <path d="M13.795 10.533 20.68 2h-3.073l-5.255 6.517L7.69 2H1l7.806 10.91L1.47 22h3.074l5.705-7.07L15.31 22H22l-8.205-11.467Zm-2.38 2.95L9.97 11.464 4.36 3.627h2.31l4.528 6.317 1.443 2.02 6.018 8.409h-2.31l-4.934-6.89Z" />
                                     </svg>
                                 </div>
-                            </a>
-                            <a href="">
+                            </Link>
+                            <Link href={'/'}>
                                 <div className="p-2 hover:text-blue-500 hover:dark:text-blue-500">
                                     <svg
                                         className="lg:w-6 lg:h-6 xs:w-4 xs:h-4 text-blue-700"
@@ -365,8 +364,8 @@ const Profile = () => {
                                         />
                                     </svg>
                                 </div>
-                            </a>
-                            <a href="https://www.youtube.com/@silentcoder7">
+                            </Link>
+                            <Link href={'/'}>
                                 <div className="p-2 hover:text-primary hover:dark:text-primary">
                                     <svg
                                         className="lg:w-6 lg:h-6 xs:w-4 xs:h-4 text-red-600"
@@ -384,7 +383,7 @@ const Profile = () => {
                                         />
                                     </svg>
                                 </div>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

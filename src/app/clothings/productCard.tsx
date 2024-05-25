@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ProductProps } from '../Types/interfaces';
 
+
 const ProductCard = ({ item }: { item: ProductProps }) => {
     const { id, name, discount, price, image_url, category_name } = item;
 
@@ -18,7 +19,7 @@ const ProductCard = ({ item }: { item: ProductProps }) => {
                 >
                     {/* Accessing the first image URL */}
                     <Image
-                        src={image_url[0]} // Use the first image URL
+                        src={image_url[0] || '../../../public/defaultImage.jpg'} // Use the first image URL
                         alt="Product"
                         width={300}
                         height={300}

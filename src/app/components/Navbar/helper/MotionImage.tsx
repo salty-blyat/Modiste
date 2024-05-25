@@ -27,7 +27,7 @@ const MotionImage = ({ title, image, isHover }: Props) => {
             ref={ref}
         >
             <Image
-                src={image}
+                src={image || '../../../../public/defaultImage.jpg'}
                 alt={title} 
                 placeholder="blur"
                 className="h-full w-full object-cover"

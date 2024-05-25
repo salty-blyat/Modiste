@@ -1,6 +1,6 @@
 "use client"
 import Image, { StaticImageData } from 'next/image';
-import Link from 'next/link';
+import Link from 'next/link'; 
 
 interface Props {
     right?: boolean;
@@ -15,7 +15,7 @@ const Collection = ({ right = false, title, subtitle, image, href }: Props) => {
         <div className={`flex ${right ? 'flex-row-reverse self-end' : ''} -mb-8 h-96 gap-4 sm:gap-8`}>
             <div className="h-80 w-48 sm:w-64 xl:h-auto xl:w-80 relative">
                 <Image
-                    src={image} // Use image directly as src
+                    src={image || '../../../../public/defaultImage.jpg'} // Use image directly as src
                     alt={title}
                     className='object-fit-cover'
                     layout="fill" // Make sure to include layout if necessary

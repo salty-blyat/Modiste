@@ -11,7 +11,7 @@ import { useAppContext } from '../Context';
 import { PopoverContent } from '../Popover/popover';
 import NavItem from './navItem';
 import { useAuthContext } from '../Context/auth';
-import { useState } from 'react'; 
+import { useState } from 'react';  
 
 
 const Navbar = () => {
@@ -120,14 +120,14 @@ const Navbar = () => {
                         {user?.img_url ? (
                             <Link href="/profile" passHref>
                                 <Popover placement="bottomLeft" content={ProfileSetting}>
-                                    <Image className='rounded-full' src={user.img_url} alt={user.user_name} width={45} height={45} />
+                                    <Image className='rounded-full' src={user.img_url || '../../../../public/defaultImage.jpg'} alt={user.user_name} width={45} height={45} />
                                 </Popover>
                             </Link>
                         ) : (
                             <Popover placement="bottomLeft" content={user ? ProfileSetting : <Button href='/login'>Sign in</Button>}>
                                 {user ? (
                                     <Link className='bg-indigo-100 size-9 rounded-full' href="/profile" passHref>
-                                        <ImageDesign src={user?.img_url} style={{ fontSize: "1.4rem" }} />
+                                        <ImageDesign src={user?.img_url || '../../../../public/defaultImage.jpg'} style={{ fontSize: "1.4rem" }} />
                                     </Link>
                                 ) : (
                                     <Link href="/login" passHref>
@@ -158,14 +158,14 @@ const Navbar = () => {
                     {user?.img_url ? (
                         <Popover placement="bottomLeft" content={ProfileSetting} trigger='click'>
                             {/* <Link href="/profile" passHref> */}
-                            <Image src={user?.img_url} alt={user.user_name} className='rounded-full' width={35} height={35} />
+                            <Image src={user?.img_url || '../../../../public/defaultImage.jpg'} alt={user.user_name} className='rounded-full' width={35} height={35} />
                             {/* </Link> */}
                         </Popover>
                     ) : (
                         <Popover placement="bottomLeft" content={user ? ProfileSetting : <Button href='/login'>Sign in</Button>}>
                             {user ? (
                                 <Link className='bg-indigo-100 size-9 rounded-full' href="/profile" passHref>
-                                    <ImageDesign src={user?.img_url} style={{ fontSize: "1.4rem" }} />
+                                    <ImageDesign src={user?.img_url || '../../../../public/defaultImage.jpg'} style={{ fontSize: "1.4rem" }} />
                                 </Link>
                             ) : (
                                 <Link href="/login" passHref>
