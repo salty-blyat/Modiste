@@ -29,7 +29,7 @@ interface AppContextType {
     handleAddToCart: (item: ProductProps) => void;
     handleDecreaseCartItem: (item: ProductProps) => void;
     handleClearCartItem: () => void;
-    handleCheckout: () => string;
+    handleCheckout: () => void | string | Promise<any>;
 }
 
 // Define the context

@@ -1,6 +1,6 @@
 import { Button, Form, Input, Modal, Radio } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useAppContext } from '../../Context';
 import { useAuthContext } from '../../Context/auth';
 import SuccessModal from '../../Modals/successModal';
@@ -37,14 +37,17 @@ const ConfirmCartModal: React.FC<ConfirmCartModalProps> = ({ isModalOpen, closeM
                 open={isModalOpen} // Use 'visible' instead of 'open' 
                 onCancel={closeModal}
                 footer={[
-                    <div className='flex justify-end items-center py-2.5 '>
-                        <Button key="cancel" onClick={closeModal}>
-                            Cancel
-                        </Button>,
-                        <Button key="confirm" className=' rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]' onClick={form.submit}>
-                            Confirm Payment
-                        </Button>
-                    </div>,
+                    <>
+                        <div key='container' className='flex justify-end items-center py-2.5 '>
+                            <Button key="cancel" onClick={closeModal}>
+                                Cancel
+                            </Button>,
+                            <Button key="confirm" className=' rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]' onClick={form.submit}>
+                                Confirm Payment
+                            </Button>
+                        </div>
+                    </>
+                    ,
                 ]}
             >
                 <Form

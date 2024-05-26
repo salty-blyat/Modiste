@@ -24,7 +24,7 @@ const Profile = () => {
                     <div className="flex flex-col">
                         {/* Cover Image */}
                         <Image
-                            src={banner || defaultImage}
+                            src={banner || '../../../public/defaultImage.jpg'}
                             alt="User Cover"
                             className="w-full"
                             width={100}
@@ -35,13 +35,13 @@ const Profile = () => {
 
                             {user ? (
                                 <ImgD
-                                    src={user.img_url || defaultImage} // Ensure this path is correct for your project
+                                    src={user.img_url || '../../../public/defaultImage.jpg'} // Ensure this path is correct for your project
                                     alt="User Profile"
                                     className="rounded-full outline outline-2 outline-offset-2 outline-blue-500 relative lg:bottom-[5rem] sm:bottom-[4rem]"
                                 />
                             ) : (
                                 <Image
-                                    src={defaultImage} // Ensure this path is correct for your project
+                                    src={defaultImage || '../../../public/defaultImage.jpg'} // Ensure this path is correct for your project
                                     alt="Default Profile"
                                     width={100}
                                     height={100}
