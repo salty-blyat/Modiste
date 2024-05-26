@@ -2,9 +2,10 @@
 import { ProductProps } from '@/app/Types/interfaces';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { ChangeEvent, ReactNode, createContext, useContext, useEffect, useState } from 'react';
+import SuccessModal from '../Modals/successModal';
 import { useAuthContext } from './auth';
+import { responsiveArray } from 'antd/es/_util/responsiveObserver';
 
 // Define the context type
 // Ensure the 'handleCheckboxChange' function in the AppContextType interface
@@ -28,7 +29,7 @@ interface AppContextType {
     handleAddToCart: (item: ProductProps) => void;
     handleDecreaseCartItem: (item: ProductProps) => void;
     handleClearCartItem: () => void;
-    handleCheckout: () => void;
+    handleCheckout: () => string;
 }
 
 // Define the context
@@ -37,9 +38,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 // Implement the AppProvider component
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { user } = useAuthContext();
-    const router = useRouter();
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
+
     const [cartItems, setCartItems] = useState<ProductProps[]>([]);
     const [openCartModal, setOpenCartModal] = useState(false);
     const [productDetailModal, setProductDetailModal] = useState(false);
@@ -57,7 +56,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         }
     }, []);
 
- 
+
     // Update the cart items in cookies
     const updateCartItemsInCookies = (items: ProductProps[]) => {
         Cookies.set('cartItems', JSON.stringify(items), { expires: 7 }); // Set cookies to expire in 7 days
@@ -113,23 +112,36 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const handleCheckout = async () => {
         if (!user) {
             alert("Please login");
-            return;
+            return 'fail'; // Return 'fail' if user is not logged in
         }
+
         if (cartItems.length > 0 && user) {
+            const url = process.env.NEXT_PUBLIC_CHECKOUT;
+
+            if (!url) {
+                console.error('NEXT_PUBLIC_CHECKOUT environment variable is not defined.');
+                alert('Checkout URL is not defined. Please contact support.');
+                return 'fail';
+            }
+
             try {
                 const requestBody = {
                     customerId: user.user_id,
                     products: cartItems
                 };
 
-                const url = `${process.env.NEXT_PUBLIC_CHECKOUT}${requestBody}`;
-                const response = await axios.post(url);
-
+                const response = await axios.post(url, requestBody).then(res => res.data)
                 handleClearCartItem();
-                alert('success');
+                return response;
+
+
             } catch (error) {
                 console.error('Error during checkout:', error);
+                alert('Error during checkout. Please try again.');
+                return 'fail'; // Return 'fail' for any errors during checkout
             }
+        } else {
+            return 'fail'; // Return 'fail' if there are no items in the cart
         }
     };
 

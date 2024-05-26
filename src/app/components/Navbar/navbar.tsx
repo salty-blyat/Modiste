@@ -11,7 +11,7 @@ import { useAppContext } from '../Context';
 import { PopoverContent } from '../Popover/popover';
 import NavItem from './navItem';
 import { useAuthContext } from '../Context/auth';
-import { useState } from 'react';  
+import { useState } from 'react';
 
 
 const Navbar = () => {
@@ -78,7 +78,7 @@ const Navbar = () => {
                             title="Men"
                             linkTo="/clothings"
                             image={menImage}
-                            handleClick={() => handleCheckboxChange('Men')}
+                            handleClick={() => handleCheckboxChange(['Men'])}
                         />
                         <NavItem
                             title="Women"
@@ -101,21 +101,23 @@ const Navbar = () => {
                     </ul>
 
                     {/* Header Icons */}
-                    <div className="hidden hover:cursor-pointer gap-x-3 xl:flex space-x-5 items-center relative">
+                    <div className="hidden hover:cursor-pointer gap-x-3 xl:flex space-x-5 items-center">
                         <Link href="/contactus" passHref>
                             <PhoneOutlined className='text-xl p-2 transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full' />
                         </Link>
                         {/* SVG Icon */}
                         <Popover content={PopoverContent} title="Cart" placement='bottomLeft'>
-                            <ShoppingCartOutlined
-                                className='text-2xl p-2 transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full'
-                                onClick={handleToggleCartModal}
-                            />
-                            {totalInCart > 0 &&
-                                <div className='hover:cursor-pointer hidden xl:block absolute bottom-1 right-14'>
-                                    <span className="bg-red-900 py-1 px-2 text-xs text-white rounded-full">{totalInCart}</span>
-                                </div>
-                            }
+                            <div className='relative'>
+                                <ShoppingCartOutlined
+                                    className='text-2xl p-2 transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full'
+                                    onClick={handleToggleCartModal}
+                                />
+                                {totalInCart > 0 &&
+                                    <div className='hover:cursor-pointer hidden xl:block absolute bottom-0 right-0'>
+                                        <span className="bg-red-900 py-1 px-2 text-xs text-white rounded-full">{totalInCart}</span>
+                                    </div>
+                                }
+                            </div>
                         </Popover>
                         {user?.img_url ? (
                             <Link href="/profile" passHref>
@@ -138,25 +140,29 @@ const Navbar = () => {
                         )}
                     </div>
                 </div>
+
+
                 {/* Responsive navbar for small screen toggle */}
-                <div className="xl:hidden flex gap-x-1 mr-6 items-center relative pr-6">
+                <div className="xl:hidden flex gap-x-1 mr-6 items-center pr-6">
                     {/* Responsive Icon */}
                     <Link href="/contactus" passHref>
                         <PhoneOutlined className='text-xl p-2 transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full' />
                     </Link>
-                    <Popover content={PopoverContent} title="Cart" placement='bottomLeft'>
+                    {/* <Popover content={PopoverContent} title="Cart" placement='bottomLeft'> */}
+                    <Link href='/cart' passHref className='relative'>
                         <ShoppingCartOutlined
-                            className='text-2xl p-2 transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full'
-                            onClick={handleToggleCartModal}
+                            className='text-2xl p-2  transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full'
+
                         />
                         {totalInCart > 0 &&
-                            <div className='xl:hidden hover:cursor-pointer absolute bottom-6 right-12 '>
+                            <div className='xl:hidden hover:cursor-pointer absolute bottom-0 right-0'>
                                 <span className="bg-red-900 py-1 px-2 text-xs text-white rounded-full">{totalInCart}</span>
                             </div>
                         }
-                    </Popover>
+                    </Link>
+                    {/* </Popover> */}
                     {user?.img_url ? (
-                        <Popover placement="bottomLeft" content={ProfileSetting} trigger='click'>
+                        <Popover placement="bottomLeft" content={ProfileSetting}>
                             {/* <Link href="/profile" passHref> */}
                             <Image src={user?.img_url || '../../../../public/defaultImage.jpg'} alt={user.user_name} className='rounded-full' width={35} height={35} />
                             {/* </Link> */}

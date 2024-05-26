@@ -38,8 +38,7 @@ const Filter = () => {
             </Modal>
 
             <div className="hidden xl:block xl:w-48 xl:mr-5 2xl:mr-0 ">
-                <div className='fixed fixed-top '>
-
+                <div className='fixed fixed-top z-0'>
                 <FilterModal />
                 </div>
             </div>

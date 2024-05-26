@@ -1,15 +1,15 @@
 "use client"
 
+import kid from '../../../../public/collections/kid.webp';
+import men from '../../../../public/collections/men.webp';
+import unisex from '../../../../public/collections/unisex.webp';
+import women from '../../../../public/collections/women.webp';
 import Collection from './collection';
-import men from '../../../../public/collections/men.webp'
-import women from '../../../../public/collections/women.webp'
-import unisex from '../../../../public/collections/unisex.webp'
-import kid from '../../../../public/collections/kid.webp'
 
 const CollectionList = () => {
     return (
         <div className="py-28">
-            <div className="flex   flex-col items-center md:px-16 lg:px-0">
+            <div className="flex flex-col items-center md:px-16 lg:px-0">
                 <div className=" lg:w-[40rem] xl:w-[60rem]">
                     <Collection
                         title="Men"
@@ -24,8 +24,6 @@ const CollectionList = () => {
                         right
                         href='/clothings'
                     />
-                </div>
-                <div className="w-full lg:w-[40rem] xl:w-[60rem]">
                     <Collection
                         title="Kid"
                         subtitle="See what we offer to kids"

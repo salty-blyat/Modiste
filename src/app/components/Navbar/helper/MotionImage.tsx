@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image, { StaticImageData } from 'next/image';
 import { useMouse } from 'react-use';
+import defaultImage from '../../../../../public/defaultImage.jpg'
 
 interface Props {
     title: string;
@@ -27,8 +28,8 @@ const MotionImage = ({ title, image, isHover }: Props) => {
             ref={ref}
         >
             <Image
-                src={image || '../../../../public/defaultImage.jpg'}
-                alt={title} 
+                src={image || defaultImage}
+                alt={title}
                 placeholder="blur"
                 className="h-full w-full object-cover"
                 width={400}

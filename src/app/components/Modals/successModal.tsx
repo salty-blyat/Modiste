@@ -1,51 +1,47 @@
-// "use client"
-// import React from 'react'
+'use client'
+import React from 'react'
+import { Modal } from 'antd';
 
-// const SuccessModal = () => {
-//     return (
-//         <div class="modal_wrapper">
-//         <div class="shadow close_btn"></div>
-        
-//         <div class="modal">
-//           <div class="modal_item s_modal">
-//             <div class="close close_btn">
-//               <ion-icon name="close"></ion-icon>
-//             </div>
-//             <div class="modal_body">
-//                <div class="s_icon">
-//               <ion-icon name="checkmark"></ion-icon>
-//             </div>
-//             <div class="s_text">
-//               <h2>SUCCESS</h2>
-//               <p>We are delighted to inform you that we received your payment.</p>
-//             </div>
-//             </div>
-//             <div class="s_button">
-//               <button class="success_btn">Continue</button>
-//             </div>
-//           </div>
-          
-          
-//           <div class="modal_item e_modal">
-//             <div class="close close_btn">
-//               <ion-icon name="close"></ion-icon>
-//             </div>
-//             <div class="modal_body">
-//               <div class="s_icon">
-//               <ion-icon name="help"></ion-icon>
-//             </div>
-//             <div class="s_text">
-//               <h2>ERROR</h2>
-//               <p>Unfortunately we have an issue with your payment, try again later.</p>
-//             </div>
-//             </div>
-//             <div class="s_button">
-//               <button class="error_btn">Continue</button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     )
-// }
 
-// export default SuccessModal
+interface SuccessModalProps {
+    visible: boolean;
+    onClose: () => void;
+}
+
+const SuccessModal: React.FC<SuccessModalProps> = ({ visible, onClose }) => {
+    console.log(visible)
+    return (
+        <Modal
+            open={visible}
+            onCancel={onClose} 
+            footer={null}
+        >
+            <div className="my-8 text-center">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-16 shrink-0 fill-[#333] inline"
+                    viewBox="0 0 512 512"
+                >
+                    {/* SVG path */}
+                </svg>
+                <h4 className="text-2xl text-[#333] font-semibold mt-6">
+                    Successfully accepted!
+                </h4>
+                <p className="text-sm text-gray-500 mt-4">
+                    Et leo, enim in non sed quis sed. Auctor natoque auctor risus amet quis
+                    mauris. Interdum et nisi, pellentesque id lectus. Ut bibendum
+                    pellentesque arcu luctus sapien.
+                </p>
+            </div>
+            <button
+                type="button"
+                className="px-6 py-2.5 min-w-[150px] w-full rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]"
+                onClick={onClose}
+            >
+                Got it
+            </button>
+        </Modal>
+    );
+};
+
+export default SuccessModal;

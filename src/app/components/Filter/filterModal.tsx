@@ -35,8 +35,7 @@ const FilterModal = () => {
         { key: 'Z...A', label: 'Z...A' },
     ];
     const handleOpenChange = (open: boolean) => {
-        setIsOpen(open);
-        console.log('Dropdown open state:', open);
+        setIsOpen(open); 
     };
     const [rotate, cycleRotate] = useCycle(90, 0);
 

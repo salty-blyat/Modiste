@@ -10,7 +10,7 @@ interface Props {
     title: string;
     linkTo: string;
     image: StaticImageData;
-    handleClick: (e:string) => void;
+    handleClick: (e: string) => void;
 }
 
 const NavItem = ({ title, linkTo, image, handleClick }: Props) => {
@@ -23,7 +23,7 @@ const NavItem = ({ title, linkTo, image, handleClick }: Props) => {
                     className="transition-all hover:underline"
                     onHoverStart={() => setIsHover(true)}
                     onHoverEnd={() => setIsHover(false)}
-                    onClick={() =>handleClick}
+                    onClick={() => handleClick(title)}
                 >
                     {title}
                 </motion.div>
