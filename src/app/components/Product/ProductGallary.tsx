@@ -7,10 +7,10 @@ const ProductGallery = ({ images }: { images: string[] }) => {
   return (
     <Carousel infiniteLoop autoPlay>
       {images.map((img, index) => (
-        <div key={index} className="w-24 h-[40rem] object-cover">
+        <div key={index} className="w-24 h-[30rem] md:h-[40rem]">
           <Image
             src={img || '../../../../public/defaultImage.jpg'}
-            className="object-cover"
+            className="md:object-cover object-top object-cover"
             layout="fill"
             alt="Product"
           />

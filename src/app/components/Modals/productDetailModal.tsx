@@ -5,8 +5,6 @@ import { useAppContext } from '../Context';
 
 const ProductDetailModal = ({ detail }: { detail: string }) => {
     const { productDetailModal, handleToggleProductDetailModal } = useAppContext();
-
-    
     return (
         <>
             <Button type="link" className='cursor-pointer text-xs text-zinc-500 underline p-0' onClick={handleToggleProductDetailModal}>

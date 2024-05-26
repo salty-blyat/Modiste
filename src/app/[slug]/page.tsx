@@ -71,7 +71,7 @@ const ProductDetails = ({ params }: ProductDetailsProps) => {
                 <Navbar />
                 <div className="pt-[10rem] flex flex-col items-center justify-center px-0 sm:px-5 md:px-10 lg:px-36 xl:flex-row xl:items-start xl:gap-12 xl:px-0 2xl:gap-24">
                     <motion.div
-                        className=" relative flex h-full justify-end overflow-hidden xl:w-[50%] 2xl:min-w-[50%]"
+                        className="  relative flex h-full  justify-end overflow-hidden xl:w-[50%] 2xl:min-w-[50%]"
                     >
                         <ProductGallery images={product.image_url} />
                     </motion.div>
