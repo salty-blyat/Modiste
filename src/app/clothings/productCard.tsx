@@ -35,7 +35,7 @@ const ProductCard = ({ item }: { item: ProductProps }) => {
                     <h5 className="text-gray-500">{category_name}</h5>
                 </div>
                 <div className="text-right">
-                    <h4 className="-mb-1 text-lg text-nowrap">$ {price.toFixed(2)}</h4>
+                    <h4 className="-mb-1 text-lg text-nowrap">${price.toFixed(2)}</h4>
                     {discount && (
                         <h5 className="text-gray-500 line-through">${discount}</h5>
                     )}
