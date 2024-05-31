@@ -15,7 +15,7 @@ interface Props {
 const Collection = ({ right = false, title, subtitle, image, href, handleClick }: Props) => {
     return (
         <div className={`flex ${right ? 'flex-row-reverse self-end' : ''} -mb-8 h-96 gap-4 sm:gap-8 `}>
-            <div className="h-80 w-48 sm:w-64 xl:h-auto xl:w-80 relative">
+            <div className="h-72 sm:h-80 w-48 sm:w-64 xl:h-auto xl:w-80 relative">
                 <Image
                     src={image || defaultImage} // Use image directly as src
                     alt={title}

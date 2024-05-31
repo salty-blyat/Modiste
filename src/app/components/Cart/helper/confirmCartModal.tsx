@@ -1,9 +1,10 @@
-import { Button, Form, Input, Modal, Radio } from 'antd';
+import { Button, Form, Input, Modal, Radio, Result } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import React, { Fragment, useState } from 'react';
 import { useAppContext } from '../../Context';
 import { useAuthContext } from '../../Context/auth';
 import SuccessModal from '../../Modals/successModal';
+import axios from 'axios';
 
 interface ConfirmCartModalProps {
     isModalOpen: boolean;
@@ -19,36 +20,36 @@ const ConfirmCartModal: React.FC<ConfirmCartModalProps> = ({ isModalOpen, closeM
     const [form] = useForm();
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false); // State to control success modal
 
-
     const handleFinish = async () => {
-        const checkoutResult: any = await handleCheckout();
-        if (checkoutResult && checkoutResult.message === 'Stock decremented and cart updated successfully') {
-            setIsSuccessModalOpen(true); // Open SuccessModal if checkout is successful
+        const checkoutSuccess = await handleCheckout();
+        console.log(checkoutSuccess)
+
+        if (checkoutSuccess === true ) {
+            setIsSuccessModalOpen(true);
+        } else {
+            setIsSuccessModalOpen(false);
         }
-        closeModal(); // Close the payment confirmation modal
-        form.resetFields(); // Reset the form fields
+        closeModal();
+        form.resetFields();
     };
+
 
 
     return (
         <>
             <Modal
                 title="Confirm Payment"
-                open={isModalOpen} // Use 'visible' instead of 'open' 
+                open={isModalOpen}
                 onCancel={closeModal}
                 footer={[
-                    <>
-                        <div key='container' className='flex justify-end items-center py-2.5 '>
-                            <Button key="cancel" onClick={closeModal}>
-                                Cancel
-                            </Button>,
-                            <Button key="confirm" className=' rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]' onClick={form.submit}>
-                                Confirm Payment
-                            </Button>
-                        </div>
-                    </>
-                    ,
-                ]}
+                    <div key='container' className='flex justify-end items-center py-2.5 '>
+                        <Button key="cancel" onClick={closeModal}>
+                            Cancel
+                        </Button>,
+                        <Button key="confirm" className='rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]' onClick={form.submit}>
+                            Confirm Payment
+                        </Button>
+                    </div>]}
             >
                 <Form
                     form={form}
@@ -94,8 +95,31 @@ const ConfirmCartModal: React.FC<ConfirmCartModalProps> = ({ isModalOpen, closeM
             </Modal>
 
 
+            {isSuccessModalOpen && (
+                <Modal
+                    open={isSuccessModalOpen} // Use 'visible' prop
+                    onCancel={() => {
+                        closeModal();
+                        setIsSuccessModalOpen(false);
+                    }}
+                    footer={null}
+                >
+                    <Result
+                        status="success"
+                        title="Successfully Purchased Cloud Server ECS!"
+                        subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
+                        extra={[
+                            <Button key="buy" onClick={() => {
+                                closeModal();
+                                setIsSuccessModalOpen(false);
 
-            <SuccessModal visible={isSuccessModalOpen} onClose={() => setIsSuccessModalOpen(false)} />
+                            }}>
+                                Buy Again
+                            </Button>,
+                        ]}
+                    />
+                </Modal>
+            )}
         </>
     );
 };

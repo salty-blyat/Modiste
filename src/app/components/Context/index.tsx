@@ -2,10 +2,8 @@
 import { ProductProps } from '@/app/Types/interfaces';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import React, { ChangeEvent, ReactNode, createContext, useContext, useEffect, useState } from 'react';
-import SuccessModal from '../Modals/successModal';
+import React, { ChangeEvent, Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useState } from 'react';
 import { useAuthContext } from './auth';
-import { responsiveArray } from 'antd/es/_util/responsiveObserver';
 
 // Define the context type
 // Ensure the 'handleCheckboxChange' function in the AppContextType interface
@@ -15,11 +13,11 @@ interface AppContextType {
     selectedOptions: string[];
     minPrice: number;
     maxPrice: number;
-    handleCloseCartModal: () => void;
     sortOrder: string;
     isPromotion: boolean;
     cartItems: ProductProps[];
-    handleToggleCartModal: () => void;
+    handleOpenCartModal: () => void;
+    handleCloseCartModal: () => void;
     handleCheckboxChange: (checkedValues: string | string[]) => void;
     handleMinPriceChange: (e: ChangeEvent<HTMLInputElement>) => void;
     handleMaxPriceChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -46,6 +44,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
     const [minPrice, setMinPrice] = useState<number>(1);
     const [maxPrice, setMaxPrice] = useState<number>(10000);
+
     const [sortOrder, setSortOrder] = useState<string>('Default');
 
     // Load cart items from cookies on component mount
@@ -132,16 +131,16 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
                 const response = await axios.post(url, requestBody).then(res => res.data)
                 handleClearCartItem();
-                return response;
 
+                if (response.message === 'Stock decremented, purchases incremented, and cart updated successfully') {
+                    return true; // Return true on success
+                } else {
+                    return false; // Return false on failure
+                }
 
             } catch (error) {
-                console.error('Error during checkout:', error);
                 alert('Error during checkout. Please try again.');
-                return 'fail'; // Return 'fail' for any errors during checkout
             }
-        } else {
-            return 'fail'; // Return 'fail' if there are no items in the cart
         }
     };
 
@@ -167,8 +166,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         setIsPromotion(e.target.checked);
     };
 
-    const handleToggleCartModal = () => {
-        setOpenCartModal(prev => !prev);
+    const handleOpenCartModal = () => {
+        setOpenCartModal(true);
     };
 
     const handleCloseCartModal = () => {
@@ -188,8 +187,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         sortOrder,
         isPromotion,
         cartItems,
-        handleToggleCartModal,
         handleCheckboxChange,
+        handleOpenCartModal,
         handleCloseCartModal,
         handleMinPriceChange,
         handleMaxPriceChange,
@@ -199,7 +198,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         handleAddToCart,
         handleDecreaseCartItem,
         handleClearCartItem,
-        handleCheckout,
+        handleCheckout
     };
 
     return (

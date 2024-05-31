@@ -1,4 +1,3 @@
-"use client";
 import React, { useEffect, useState } from 'react';
 import { ProductProps } from '../Types/interfaces';
 import { useAppContext } from '../components/Context';
@@ -6,35 +5,39 @@ import Filter from '../components/Filter/filter';
 import ProductCard from './productCard';
 import Loading from '../Loading';
 import { BeatLoader } from 'react-spinners';
+import ReactMemo from 'react-dom'; // Import ReactMemo
 
 const ClothingList: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [products, setProducts] = useState<ProductProps[]>([]);
     const { minPrice, maxPrice, sortOrder, selectedOptions, isPromotion } = useAppContext();
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const url = process.env.NEXT_PUBLIC_GET_PRODUCT;
-                if (!url) {
-                    throw new Error('The product API URL is not defined');
-                }
-
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data: ProductProps[] = await response.json();
-                setProducts(data);
-            } catch (error) {
-                console.error('Error fetching products:', error);
-            } finally {
-                setLoading(false);
+    const fetchProducts = async () => {
+        try {
+            const url = process.env.NEXT_PUBLIC_GET_PRODUCT;
+            if (!url) {
+                throw new Error('The product API URL is not defined');
             }
-        };
 
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data: ProductProps[] = await response.json();
+            setProducts(data);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
         fetchProducts();
+
     }, []);
+
+
 
     if (loading) {
         return <Loading />;
@@ -65,7 +68,7 @@ const ClothingList: React.FC = () => {
     return (
         <div className="pt-[13rem] min-h-full px-3 sm:px-10 xl:px-24 2xl:px-48 relative mt-4 flex w-full">
             <Filter />
-            <div className="  relative grid flex-1 grid-cols-[repeat(auto-fit,18rem)] justify-center gap-7 2xl:grid-cols-[repeat(auto-fit,24rem)]">
+            <div className="relative grid flex-1 grid-cols-[repeat(auto-fit,18rem)] justify-center gap-7 2xl:grid-cols-[repeat(auto-fit,24rem)]">
                 {sortedProducts.length > 0 ? (
                     sortedProducts.map((product) => (
                         <ProductCard
@@ -81,4 +84,4 @@ const ClothingList: React.FC = () => {
     );
 };
 
-export default ClothingList;
+export default React.memo(ClothingList); // Wrap the component with React.memo()

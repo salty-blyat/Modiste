@@ -16,7 +16,7 @@ import { useState } from 'react';
 
 const Navbar = () => {
     const { user, logout } = useAuthContext();
-    const { handleToggleCartModal, handleCheckboxChange, cartItems } = useAppContext();
+    const { handleCheckboxChange, cartItems, handleOpenCartModal } = useAppContext();
     const totalInCart = cartItems.reduce((acc, item) => acc + (item.inCart || 0), 0);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -40,11 +40,11 @@ const Navbar = () => {
                     <UserOutlined /> Profile
                 </Link>
             </Button>
-            <Button className='text-left flex items-center gap-x-2' type='text'>
+            {/* <Button className='text-left flex items-center gap-x-2' type='text'>
                 <Link href={'/setting'} passHref>
                     <SettingOutlined /> Setting
                 </Link>
-            </Button>
+            </Button> */}
             <hr />
             <Button className='text-left flex items-center gap-x-2' type='text' onClick={showModal}>
                 <LogoutOutlined /> Log out
@@ -54,13 +54,11 @@ const Navbar = () => {
 
 
     return (
-
         <section className="flex shadow-md flex-wrap fixed fixed-top z-10 bg-white top-0 left-0 right-0 mx-auto max-w-full">
-
             {/* Navbar */}
-            <nav className="flex justify-between w-full">
-                <div className="px-5 xl:px-12 py-6 flex w-full items-center">
-                    <Link href="/" className="text-3xl font-bold font-heading" passHref>
+            <nav className="flex justify-between w-full mx-4">
+                <div className="py-6 flex w-full items-center">
+                    <Link href="/" className="hover:text-black/20 text-3xl font-bold font-heading" passHref>
                         MODISTE
                     </Link>
                     <Modal
@@ -100,8 +98,8 @@ const Navbar = () => {
                         />
                     </ul>
 
-                    {/* Header Icons */}
-                    <div className="hidden hover:cursor-pointer gap-x-3 xl:flex space-x-5 items-center">
+                    {/* Header Icons for XL screen */}
+                    <div className="hidden hover:cursor-pointer gap-x-1 xl:flex items-center">
                         <Link href="/contactus" passHref>
                             <PhoneOutlined className='text-xl p-2 transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full' />
                         </Link>
@@ -110,7 +108,7 @@ const Navbar = () => {
                             <div className='relative'>
                                 <ShoppingCartOutlined
                                     className='text-2xl p-2 transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full'
-                                    onClick={handleToggleCartModal}
+                                    onClick={handleOpenCartModal}
                                 />
                                 {totalInCart > 0 &&
                                     <div className='hover:cursor-pointer hidden xl:block absolute bottom-0 right-0'>
@@ -122,7 +120,7 @@ const Navbar = () => {
                         {user?.img_url ? (
                             <Link href="/profile" passHref>
                                 <Popover placement="bottomLeft" content={ProfileSetting}>
-                                    <Image className='rounded-full' src={user.img_url || '../../../../public/defaultImage.jpg'} alt={user.user_name} width={45} height={45} />
+                                    <Image className='rounded-full' src={user.img_url || '../../../../public/defaultImage.jpg'} alt={user.user_name} width={40} height={40} />
                                 </Popover>
                             </Link>
                         ) : (
@@ -143,16 +141,16 @@ const Navbar = () => {
 
 
                 {/* Responsive navbar for small screen toggle */}
-                <div className="xl:hidden flex gap-x-1 mr-6 items-center pr-6">
+                <div className="xl:hidden flex gap-x-1 items-center mr-5">
                     {/* Responsive Icon */}
                     <Link href="/contactus" passHref>
                         <PhoneOutlined className='text-xl p-2 transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full' />
                     </Link>
-                    {/* <Popover content={PopoverContent} title="Cart" placement='bottomLeft'> */}
-                    <Link href='/cart' passHref className='relative'>
+
+                    {/* mobile shop icon */}
+                    <Link href='/cart' passHref className='relative sm:hidden'>
                         <ShoppingCartOutlined
                             className='text-2xl p-2  transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full'
-
                         />
                         {totalInCart > 0 &&
                             <div className='xl:hidden hover:cursor-pointer absolute bottom-0 right-0'>
@@ -160,7 +158,19 @@ const Navbar = () => {
                             </div>
                         }
                     </Link>
-                    {/* </Popover> */}
+
+                    <Popover content={PopoverContent} title="Cart" placement='bottomLeft'>
+                        <div className='sm:relative sm:block hidden'>
+                            <ShoppingCartOutlined onClick={handleOpenCartModal}
+                                className='text-2xl p-2  transition-all ease-in transform hover:scale-110 hover:bg-gray-600 hover:text-white rounded-full'
+                            />
+                            {totalInCart > 0 &&
+                                <div className='xl:hidden hover:cursor-pointer absolute bottom-0 right-0'>
+                                    <span className="bg-red-900 py-1 px-2 text-xs text-white rounded-full">{totalInCart}</span>
+                                </div>
+                            }
+                        </div>
+                    </Popover>
                     {user?.img_url ? (
                         <Popover placement="bottomLeft" content={ProfileSetting}>
                             {/* <Link href="/profile" passHref> */}

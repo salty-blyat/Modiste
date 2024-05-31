@@ -7,15 +7,14 @@ const mailjet = new Mailjet({
 });
 
 export async function POST(req: NextRequest) { 
-    const { name, message  } = await req.json();
-    const email = "hokheng12123@gmail.com"; 
-
+    const { name, message, email   } = await req.json(); 
+   
   try {
     const result = await mailjet.post("send", { 'version': 'v3.1' })
       .request({
         "Messages": [{
           "From": {
-            "Email": email,
+            "Email": "hokheng12123@gmail.com",
             "Name": name
           },
           "To": [{
@@ -26,8 +25,9 @@ export async function POST(req: NextRequest) {
           "TextPart": `Client Name: ${name}\n   Message:\n${message}`,
           "HTMLPart": `
           <div style="font-family: Helvetica, Arial, sans-serif; background-color: #f7f7f7; padding: 20px; border-radius: 5px; color: #333;">
-          <h2 style="color: #333;">New Appointment Request</h2>
+          <h2 style="color: #333;">Customer Email</h2>
           <p><strong>Client Name:</strong> ${name}</p> 
+          <p><strong>Client Email:</strong> ${email}</p> 
           <p><strong>Message:</strong></p>
           <p>${message}</p>
           </div>

@@ -7,7 +7,7 @@ import { AuthProvider } from "./components/Context/auth";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Modiste",
+  title: "Modiste", 
   description: "Modiste was made by Lor Hokheng",
 };
 

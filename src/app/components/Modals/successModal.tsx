@@ -36,8 +36,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ visible, onClose }) => {
             <button
                 type="button"
                 className="px-6 py-2.5 min-w-[150px] w-full rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]"
-                onClick={onClose}
-            >
+                onClick={onClose}>
                 Got it
             </button>
         </Modal>

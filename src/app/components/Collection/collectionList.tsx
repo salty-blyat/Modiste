@@ -10,8 +10,8 @@ import Collection from './collection';
 const CollectionList = () => {
     const { handleCheckboxChange } = useAppContext();
     return (
-        <div className="py-28">
-            <div className="flex flex-col items-center md:px-16 lg:px-0">
+        <div className="py-20">
+            <div className="flex flex-col items-center md:px-16 px-4 lg:px-0">
                 <div className=" lg:w-[40rem] xl:w-[60rem]">
                     <Collection
                         title="Men"

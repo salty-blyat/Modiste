@@ -34,14 +34,19 @@ const FilterModal = () => {
         { key: 'A...Z', label: 'A...Z' },
         { key: 'Z...A', label: 'Z...A' },
     ];
-    const handleOpenChange = (open: boolean) => {
-        setIsOpen(open); 
+    const menuProps = {
+        items,
+        onClick: handleMenuClick,
     };
+
+    // const handleOpenChange = (open: boolean) => {
+    //     setIsOpen(open); 
+    // };
     const [rotate, cycleRotate] = useCycle(90, 0);
 
     return (
         <>
-            <Dropdown menu={{ items }} trigger={['click']} className="hover:cursor-pointer mb-3" onOpenChange={handleOpenChange}>
+            <Dropdown menu={menuProps} trigger={['click']} className="hover:cursor-pointer mb-3">
                 <div className='text-2xl font-semibold' onClick={(e) => e.preventDefault()}>
                     <p className='mb-3'>Sort by</p>
                     <p className='text-xl flex justify-between items-center font-medium border rounded-lg px-5'>

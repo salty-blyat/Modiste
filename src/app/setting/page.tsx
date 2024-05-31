@@ -11,8 +11,8 @@ const Setting = () => {
       <Suspense fallback={<Loading />}>
         <Navbar />
         <Cart />
-        <section className="w-full overflow-hidden dark:bg-gray-900">
-          adsfdsaf
+        <section className="transition-all mx-4 transform ease-in delay-100 mt-36 shadow-lg flex flex-col md:flex-row gap-4">
+          
         </section>
       </Suspense>
 

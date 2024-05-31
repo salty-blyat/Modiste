@@ -69,7 +69,7 @@ const ProductDetails = ({ params }: ProductDetailsProps) => {
             <Suspense fallback={<Loading />}>
 
                 <Navbar />
-                <div className="pt-[10rem] flex flex-col items-center justify-center px-0 sm:px-5 md:px-10 lg:px-36 xl:flex-row xl:items-start xl:gap-12 xl:px-0 2xl:gap-24">
+                <div className="pt-[10rem] mx-4 flex flex-col items-center justify-center px-0 sm:px-5 md:px-10 lg:px-36 xl:flex-row xl:items-start xl:gap-12 xl:px-0 2xl:gap-24">
                     <motion.div
                         className="  relative flex h-full  justify-end overflow-hidden xl:w-[50%] 2xl:min-w-[50%]"
                     >
@@ -100,19 +100,19 @@ const ProductDetails = ({ params }: ProductDetailsProps) => {
                                 {/* Assuming product variants will be added later */}
                             </div>
 
-                            <div className="mt-7 flex items-center gap-2">
+                            {/* <div className="mt-7 flex items-center gap-2">
                                 <h4 className="text-xl font-semibold">Select size</h4>
                                 <button className="mt-[2px] cursor-pointer text-zinc-500 hover:underline" >
                                     (Size guide)
                                 </button>
-                            </div>
+                            </div> */}
                             <div className="mt-2 flex w-full flex-wrap gap-5">
                                 {/* Assuming product sizes will be added later */}
                             </div>
 
                             <p className="mt-7 2xl:w-2/3">
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est a autem molestiae vel commodi inventore repudiandae animi consectetur, sapiente quis laudantium necessitatibus laboriosam ex sed, ipsa reiciendis alias fuga unde.
-                                {product.description}
+                                {product.description} Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est a autem molestiae vel commodi inventore repudiandae animi consectetur, sapiente quis laudantium necessitatibus laboriosam ex sed, ipsa reiciendis alias fuga unde.
+                    
                             </p>
 
                             <span className='block'>
