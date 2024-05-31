@@ -1,20 +1,22 @@
 'use client';
-import React, { createContext, useState, useContext, useEffect, ReactNode, Dispatch } from 'react';
+import { UserProps } from '@/app/Types/interfaces';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
-import { UserProps } from '@/app/Types/interfaces';
+import React, { Dispatch, ReactNode, createContext, useContext, useEffect, useState } from 'react';
 
 // Define the authentication context interface
 interface AuthContextType {
     user: UserProps | null;
     loading: boolean;
     isAuthenticated: boolean;
-    login: (email: string, password: string) => Promise<void>;
+    login: (email: string, password: string) => Promise<void | string>;
     logout: () => void;
-    signIn: (username: string, email: string, password: string) => Promise<void>;
+    signIn: (username: string, email: string, password: string) => Promise<void | string>;
     errorMessage: string;
     setErrorMessage: Dispatch<React.SetStateAction<string>>;
+    successMessage: string;
+    setSuccessMessage: Dispatch<React.SetStateAction<string>>;
 }
 
 interface AuthProviderProps {
@@ -30,6 +32,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [loading, setLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
+    const [successMessage, setSuccessMessage] = useState<string>('');
 
     const router = useRouter();
 
@@ -50,6 +53,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
             if (response.status === 200 && response.data.user) {
                 const user = response.data.user;
+                setSuccessMessage("Success login")
                 Cookies.set('user', JSON.stringify(user), { expires: 7 });
                 setUser(user);
                 setIsAuthenticated(true);
@@ -79,12 +83,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             if (!url) throw new Error('The sign-in URL is not defined.');
             const response = await axios.post(url, { username, email, password });
 
-            if (response.status === 200 && response.data.user) {
+            console.log('SignIn Response:', response); // Add this line for debugging
+
+            if (response.status === 201 && response.data.user) {
+                setSuccessMessage("Success signin");
                 const user = response.data.user;
                 Cookies.set('user', JSON.stringify(user), { expires: 7 });
                 setUser(user);
                 setIsAuthenticated(true);
-                router.push('/');
+                return "Successfully signed in";
             } else {
                 console.error('Unexpected response from server:', response);
                 setErrorMessage('An unexpected error occurred. Please try again.');
@@ -119,7 +126,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         logout,
         signIn,
         errorMessage,
-        setErrorMessage
+        setErrorMessage,
+        successMessage,
+        setSuccessMessage,
     };
 
     return (

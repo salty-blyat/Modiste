@@ -1,17 +1,18 @@
 "use client";
-import { LogoutOutlined, PhoneOutlined, SettingOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Popover, Image as ImageDesign, Modal } from 'antd';
+import { LogoutOutlined, PhoneOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Modal, Popover } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import kidImage from '../../../../public/collections/kid.webp';
 import menImage from '../../../../public/collections/men.webp';
 import unisexImage from '../../../../public/collections/unisex.webp';
 import womenImage from '../../../../public/collections/women.webp';
 import { useAppContext } from '../Context';
+import { useAuthContext } from '../Context/auth';
 import { PopoverContent } from '../Popover/popover';
 import NavItem from './navItem';
-import { useAuthContext } from '../Context/auth';
-import { useState } from 'react';
+import defaultImage from '@public/defaultImage.jpg'
 
 
 const Navbar = () => {
@@ -120,14 +121,14 @@ const Navbar = () => {
                         {user?.img_url ? (
                             <Link href="/profile" passHref>
                                 <Popover placement="bottomLeft" content={ProfileSetting}>
-                                    <Image className='rounded-full' src={user.img_url || '../../../../public/defaultImage.jpg'} alt={user.user_name} width={40} height={40} />
+                                    <Image className='rounded-full aspect-square object-cover' src={user.img_url || defaultImage} alt={user.user_name} width={40} height={40} />
                                 </Popover>
                             </Link>
                         ) : (
                             <Popover placement="bottomLeft" content={user ? ProfileSetting : <Button href='/login'>Sign in</Button>}>
                                 {user ? (
                                     <Link className='bg-indigo-100 size-9 rounded-full' href="/profile" passHref>
-                                        <ImageDesign src={user?.img_url || '../../../../public/defaultImage.jpg'} style={{ fontSize: "1.4rem" }} />
+                                        <Image className='rounded-full aspect-square object-cover' src={user?.img_url || defaultImage} alt={user?.user_name || "Profile"} width={40} height={40} />
                                     </Link>
                                 ) : (
                                     <Link href="/login" passHref>
@@ -174,14 +175,14 @@ const Navbar = () => {
                     {user?.img_url ? (
                         <Popover placement="bottomLeft" content={ProfileSetting}>
                             {/* <Link href="/profile" passHref> */}
-                            <Image src={user?.img_url || '../../../../public/defaultImage.jpg'} alt={user.user_name} className='rounded-full' width={35} height={35} />
+                            <Image src={user?.img_url || '../../../../public/defaultImage.jpg'} alt={user.user_name} className='rounded-full aspect-square object-cover' width={35} height={35} />
                             {/* </Link> */}
                         </Popover>
                     ) : (
                         <Popover placement="bottomLeft" content={user ? ProfileSetting : <Button href='/login'>Sign in</Button>}>
                             {user ? (
-                                <Link className='bg-indigo-100 size-9 rounded-full' href="/profile" passHref>
-                                    <ImageDesign src={user?.img_url || '../../../../public/defaultImage.jpg'} style={{ fontSize: "1.4rem" }} />
+                                <Link className='bg-indigo-100 size-9 rounded-full object-cover' href="/profile" passHref>
+                                    <Image className='rounded-full aspect-square object-cover' src={user?.img_url || defaultImage} width={45} height={45} alt={user.user_name || "Profile"} />
                                 </Link>
                             ) : (
                                 <Link href="/login" passHref>

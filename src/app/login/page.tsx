@@ -12,25 +12,35 @@ const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isSignUp, setIsSignUp] = useState(false);
-    const { login, signIn, errorMessage, setErrorMessage } = useAuthContext();
+    const { login, signIn, successMessage, setSuccessMessage, errorMessage, setErrorMessage } = useAuthContext();
 
     const handleClear = () => {
         setEmail('')
         setPassword('')
         setUsername('')
+
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            let result;
             if (isSignUp) {
-                await signIn(username, email, password);
+                result = await signIn(username, email, password);
+                // Check if the response was successful 
+                if (result && result === "Successfully signed in") {
+                    setSuccessMessage("Successfully signed up"); // Adjusted for consistency
+                }
             } else {
-                await login(email, password);
+                result = await login(email, password);
+                // Check if the response was successful  
+                if (result && result === "Successfully signed in") {
+                    setSuccessMessage("Successfully logged in");
+                }
             }
             handleClear();
         } catch (error: unknown) {
-            // Set error message using state
+            // Handle error
             if (error instanceof Error && 'response' in error && typeof error.response === 'object') {
                 const axiosError = error as { response?: { data?: { message?: string } } };
                 setErrorMessage(axiosError.response?.data?.message || 'An error occurred. Please try again.');
@@ -53,6 +63,14 @@ const LoginForm = () => {
                                 <Alert
                                     message={errorMessage}
                                     type="error"
+                                    showIcon
+                                    closable
+                                />
+                            )}
+                            {successMessage && (
+                                <Alert
+                                    message={successMessage}
+                                    type="success"
                                     showIcon
                                     closable
                                 />
